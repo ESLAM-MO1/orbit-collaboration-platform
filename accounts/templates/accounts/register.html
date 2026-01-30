@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Register - Orbit</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background:#0a0e27;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+/* ===== SPACE BACKGROUND ===== */
+.space-bg{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#1a1f3a 0%,#0f1729 50%,#0a0e27 100%);
+  z-index:1;
+}
+
+.stars{position:fixed;inset:0;pointer-events:none;z-index:2;}
+.star{
+  position:absolute;
+  background:white;
+  border-radius:50%;
+  animation:twinkle 3s infinite;
+}
+@keyframes twinkle{0%,100%{opacity:.5}50%{opacity:1}}
+
+.orbits{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:100%;height:100%;
+  pointer-events:none;
+  z-index:2;
+}
+.orbit{
+  position:absolute;
+  top:50%;left:50%;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+.orbit-1{width:500px;height:500px;animation:rotate 50s linear infinite;}
+.orbit-2{width:700px;height:700px;animation:rotate 70s linear infinite reverse;}
+@keyframes rotate{
+  from{transform:translate(-50%,-50%) rotate(0deg);}
+  to{transform:translate(-50%,-50%) rotate(360deg);}
+}
+
+.planet{
+  position:absolute;
+  border-radius:50%;
+  box-shadow:0 0 25px rgba(255,255,255,.6);
+}
+.planet-1{
+  width:16px;height:16px;
+  background:linear-gradient(135deg,#c084fc,#f472b6);
+  top:0;left:50%;transform:translateX(-50%);
+}
+.planet-2{
+  width:13px;height:13px;
+  background:linear-gradient(135deg,#818cf8,#c084fc);
+  top:0;left:50%;transform:translateX(-50%);
+}
+
+.glow-orb{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:.4;
+  pointer-events:none;
+  z-index:2;
+}
+.glow-1{
+  width:550px;height:550px;
+  background:radial-gradient(circle,rgba(192,132,252,.5),transparent);
+  top:-250px;right:-150px;
+}
+.glow-2{
+  width:450px;height:450px;
+  background:radial-gradient(circle,rgba(244,114,182,.4),transparent);
+  bottom:-200px;left:-100px;
+}
+
+/* ===== LOGO ===== */
+.orbit-logo{
+  position:absolute;
+  top:35px;
+  left:40px;
+  z-index:100;
+}
+.logo-container{display:flex;align-items:center;gap:12px;}
+.logo-icon{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,#c084fc,#f472b6);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 40px rgba(192,132,252,.7);
+}
+.logo-icon svg{
+  width:22px;height:22px;
+  stroke:white;
+  stroke-width:2;
+  fill:none;
+}
+.logo-text{
+  font-family:'Orbitron',sans-serif;
+  font-size:28px;
+  font-weight:800;
+  color:#ffffff;
+  letter-spacing:2px;
+}
+
+/* ===== REGISTER CARD ===== */
+.register-wrapper{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+  position:relative;
+  z-index:5;
+}
+
+.register-box{
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(40px);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:32px;
+  padding:60px 50px;
+  width:100%;
+  max-width:520px;
+  box-shadow:0 30px 90px rgba(0,0,0,.5),
+             0 0 100px rgba(255,255,255,.05) inset;
+  z-index:10;
+}
+
+.register-header{text-align:center;margin-bottom:40px;}
+
+.register-icon{
+  width:80px;height:80px;
+  margin:0 auto 25px;
+  background:linear-gradient(135deg,#c084fc,#f472b6);
+  border-radius:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 20px 60px rgba(192,132,252,.6);
+}
+.register-icon svg{width:40px;height:40px;fill:white;}
+
+.register-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:32px;
+  color:#fff;
+}
+.register-subtitle{color:#e9d5ff;font-size:14px;}
+
+/* ===== FORM ===== */
+.register-form p{margin-bottom:26px;}
+
+.register-form label{
+  display:block;
+  color:#ffffff;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:10px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.register-form input{
+  width:100%;
+  padding:16px 20px;
+  background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,255,255,.15);
+  border-radius:16px;
+  color:#ffffff;
+  font-size:15px;
+  outline:none;
+}
+
+.register-form input:focus{
+  background:rgba(255,255,255,.12);
+  border-color:#c084fc;
+  box-shadow:0 0 0 4px rgba(192,132,252,.2);
+}
+.register-form .helptext {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #c7bdf5;
+  font-size: 12px;
+  margin-top: 6px;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+/* أيقونة صغيرة قبل النص */
+.register-form .helptext::before {
+  content: "ⓘ";
+  font-size: 12px;
+  color: #c084fc;
+  opacity: 0.8;
+}
+
+
+.btn-submit{
+  width:100%;
+  padding:18px;
+  background:linear-gradient(135deg,#c084fc,#f472b6);
+  border:none;
+  border-radius:16px;
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 15px 45px rgba(192,132,252,.6);
+  transition:.4s;
+}
+.btn-submit:hover{
+  transform:translateY(-3px);
+  box-shadow:0 20px 60px rgba(192,132,252,.8);
+}
+
+/* ===== OR ===== */
+.divider{
+  display:flex;
+  align-items:center;
+  margin:35px 0;
+  gap:15px;
+}
+.divider-line{
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(192,132,252,.4),transparent);
+}
+.divider-text{
+  color:#e9d5ff;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:2px;
+}
+
+.login-text{
+  text-align:center;
+  color:#e9d5ff;
+}
+.login-link{
+  color:#c084fc;
+  font-weight:700;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="space-bg"></div>
+<div class="stars" id="stars"></div>
+
+<div class="orbits">
+  <div class="orbit orbit-1"><div class="planet planet-1"></div></div>
+  <div class="orbit orbit-2"><div class="planet planet-2"></div></div>
+</div>
+
+<div class="glow-orb glow-1"></div>
+<div class="glow-orb glow-2"></div>
+
+<div class="orbit-logo">
+  <div class="logo-container">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="6"/>
+        <line x1="12" y1="18" x2="12" y2="22"/>
+      </svg>
+    </div>
+    <div class="logo-text">ORBIT</div>
+  </div>
+</div>
+
+<div class="register-wrapper">
+  <div class="register-box">
+
+    <div class="register-header">
+      <div class="register-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 22c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+      </div>
+      <h1 class="register-title">Create Account</h1>
+      <p class="register-subtitle">Join Orbit and start your journey</p>
+    </div>
+
+    <form method="post" class="register-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-submit">Create Account</button>
+    </form>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">OR</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <p class="login-text">
+      Already have an account?
+      <a href="{% url 'login' %}" class="login-link">Login</a>
+    </p>
+
+  </div>
+</div>
+
+<script>
+const stars=document.getElementById("stars");
+for(let i=0;i<200;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  const size=Math.random()*2+1;
+  s.style.width=size+"px";
+  s.style.height=size+"px";
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  stars.appendChild(s);
+}
+</script>
+
+</body>
+</html>
+{% endblock %}

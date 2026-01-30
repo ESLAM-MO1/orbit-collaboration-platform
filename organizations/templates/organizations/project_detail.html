@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ project.name }} - Orbit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Space Grotesk', sans-serif; background: #0a0e27; overflow-x: hidden; padding-bottom: 60px; }
+    .space-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #2d0f1e 0%, #4a1942 50%, #0a0e27 100%); z-index: 1; }
+    .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+    .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
+    @keyframes twinkle { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .orbits { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+    .orbit { position: absolute; top: 50%; left: 50%; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50%; transform: translate(-50%, -50%); }
+    .orbit-1 { width: 520px; height: 520px; animation: rotate 52s linear infinite; }
+    .orbit-2 { width: 720px; height: 720px; animation: rotate 72s linear infinite reverse; }
+    @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .planet { position: absolute; border-radius: 50%; box-shadow: 0 0 25px rgba(255, 255, 255, 0.6); }
+    .planet-1 { width: 16px; height: 16px; background: linear-gradient(135deg, #f43f5e, #e11d48); top: 0; left: 50%; transform: translateX(-50%); }
+    .planet-2 { width: 14px; height: 14px; background: linear-gradient(135deg, #fb7185, #f43f5e); top: 0; left: 50%; transform: translateX(-50%); }
+    .glow-orb { position: fixed; border-radius: 50%; filter: blur(100px); opacity: 0.4; pointer-events: none; z-index: 2; }
+    .glow-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(244, 63, 94, 0.5), transparent); top: -300px; right: -200px; animation: float 17s ease-in-out infinite; }
+    .glow-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(225, 29, 72, 0.4), transparent); bottom: -250px; left: -150px; animation: float 14s ease-in-out infinite reverse; }
+    @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
+    
+    .orbit-logo { position: fixed; top: 35px; left: 40px; z-index: 100; animation: fadeIn 1s ease-out; }
+    .logo-container { display: flex; align-items: center; gap: 12px; }
+    .logo-icon { width: 42px; height: 42px; background: linear-gradient(135deg, #f43f5e, #e11d48); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 0 40px rgba(244, 63, 94, 0.7), 0 0 20px rgba(255, 255, 255, 0.3); }
+    .logo-icon::before { content: ''; position: absolute; width: 52px; height: 52px; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 50%; animation: orbit-pulse 2s ease-out infinite; }
+    @keyframes orbit-pulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
+    .logo-icon svg { width: 22px; height: 22px; fill: white; }
+    .logo-text { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #ffffff, #fecdd3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .top-nav { position: fixed; top: 35px; right: 40px; display: flex; gap: 12px; z-index: 100; animation: fadeIn 1s ease-out 0.2s backwards; }
+    .nav-btn { padding: 12px 20px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
+    .nav-btn:hover { background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.4); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(244, 63, 94, 0.4); }
+    .nav-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .logout-btn { background: rgba(248, 113, 113, 0.15); border-color: rgba(248, 113, 113, 0.3); color: #fecaca; }
+    .logout-btn:hover { background: rgba(248, 113, 113, 0.25); border-color: rgba(248, 113, 113, 0.5); box-shadow: 0 10px 30px rgba(248, 113, 113, 0.3); }
+    
+    .main-container { position: relative; z-index: 10; max-width: 1200px; margin: 140px auto 0; padding: 0 40px; }
+    .header-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 28px; padding: 45px 50px; margin-bottom: 30px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); position: relative; animation: slideDown 0.8s ease-out; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    .header-card::before { content: ''; position: absolute; inset: -2px; background: linear-gradient(135deg, rgba(244, 63, 94, 0.4), rgba(225, 29, 72, 0.4)); border-radius: 28px; z-index: -1; opacity: 0; transition: opacity 0.4s; }
+    .header-card:hover::before { opacity: 1; }
+    
+    .project-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 30px; }
+    .project-title { font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 800; color: #ffffff; margin-bottom: 16px; letter-spacing: -0.5px; display: flex; align-items: center; gap: 16px; }
+    .project-title svg { width: 38px; height: 38px; stroke: #f43f5e; stroke-width: 2; fill: none; }
+    .project-desc { color: #fecdd3; font-size: 16px; line-height: 1.7; }
+    .create-task-btn { padding: 14px 28px; background: linear-gradient(135deg, #f43f5e, #e11d48); border: none; border-radius: 14px; color: white; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(244, 63, 94, 0.5); transition: all 0.4s; white-space: nowrap; position: relative; overflow: hidden; }
+    .create-task-btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
+    .create-task-btn:hover::before { width: 350px; height: 350px; }
+    .create-task-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 45px rgba(244, 63, 94, 0.7); }
+    .create-task-btn svg { width: 18px; height: 18px; stroke: white; stroke-width: 2.5; fill: none; z-index: 1; position: relative; }
+    .create-task-btn span { z-index: 1; position: relative; }
+    
+    .main-content { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 28px; padding: 45px 50px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); position: relative; animation: slideUp 0.8s ease-out 0.2s backwards; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .main-content::before { content: ''; position: absolute; inset: -2px; background: linear-gradient(135deg, rgba(244, 63, 94, 0.4), rgba(225, 29, 72, 0.4)); border-radius: 28px; z-index: -1; opacity: 0; transition: opacity 0.4s; }
+    .main-content:hover::before { opacity: 1; }
+    
+    .section-title { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: #ffffff; margin-bottom: 32px; padding-bottom: 18px; border-bottom: 2px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; gap: 12px; }
+    .section-title svg { width: 28px; height: 28px; stroke: #f43f5e; stroke-width: 2; fill: none; }
+    
+    .tasks-list { list-style: none; }
+    .task-item { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 32px; margin-bottom: 24px; transition: all 0.4s; }
+    .task-item:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(244, 63, 94, 0.5); transform: translateY(-2px); box-shadow: 0 12px 35px rgba(244, 63, 94, 0.3); }
+    .task-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 20px; }
+    .task-info { flex: 1; }
+    .task-title { font-size: 22px; color: #ffffff; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .task-title svg { width: 20px; height: 20px; stroke: #f43f5e; stroke-width: 2; fill: none; }
+    .task-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .status-badge { padding: 7px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .status-badge.todo { background: rgba(239, 68, 68, 0.2); color: #fecaca; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .status-badge.in_progress { background: rgba(251, 191, 36, 0.2); color: #fef3c7; border: 1px solid rgba(251, 191, 36, 0.3); }
+    .status-badge.done { background: rgba(52, 211, 153, 0.2); color: #d1fae5; border: 1px solid rgba(52, 211, 153, 0.3); }
+    .assignee { display: flex; align-items: center; gap: 8px; color: #fda4af; font-size: 14px; font-weight: 500; }
+    .assignee svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+    
+    .task-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .status-form { display: flex; gap: 10px; align-items: center; }
+    .status-form select { padding: 10px 40px 10px 16px; background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 10px; font-size: 14px; color: #ffffff; cursor: pointer; transition: all 0.3s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; font-family: 'Space Grotesk', sans-serif; font-weight: 500; }
+    .status-form select option { background: #1a0f2e; color: #ffffff; }
+    .status-form select:focus { outline: none; border-color: rgba(244, 63, 94, 0.6); box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.2); }
+    
+    .status-form button, .edit-btn, .delete-btn { padding: 10px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; font-family: 'Space Grotesk', sans-serif; }
+    .status-form button { background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4); }
+    .status-form button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244, 63, 94, 0.5); }
+    .edit-btn { background: rgba(255, 255, 255, 0.1); color: #fecdd3; border: 2px solid rgba(255, 255, 255, 0.2); }
+    .edit-btn:hover { background: rgba(244, 63, 94, 0.3); color: white; border-color: rgba(244, 63, 94, 0.5); transform: translateY(-2px); }
+    .delete-btn { background: rgba(239, 68, 68, 0.2); color: #fecaca; border: 2px solid rgba(239, 68, 68, 0.3); }
+    .delete-btn:hover { background: rgba(239, 68, 68, 0.4); color: white; border-color: rgba(239, 68, 68, 0.6); transform: translateY(-2px); }
+    
+    .comments-section { margin-top: 28px; padding-top: 28px; border-top: 1px solid rgba(255, 255, 255, 0.15); }
+    .comments-title { font-size: 17px; color: #ffffff; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .comments-title svg { width: 18px; height: 18px; stroke: #f43f5e; stroke-width: 2; fill: none; }
+    .comments-list { list-style: none; margin-bottom: 18px; }
+    .comment-item { background: rgba(255, 255, 255, 0.05); padding: 16px 20px; border-radius: 12px; margin-bottom: 12px; border-left: 3px solid #f43f5e; transition: all 0.3s; }
+    .comment-item:hover { background: rgba(255, 255, 255, 0.08); transform: translateX(4px); }
+    .comment-author { color: #f43f5e; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    .comment-content { color: #fecdd3; font-size: 14px; line-height: 1.6; }
+    .comment-empty { color: #fda4af; font-size: 14px; font-style: italic; padding: 12px 0; }
+    .comment-form { display: flex; gap: 12px; }
+    .comment-form input { flex: 1; padding: 12px 18px; background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 14px; color: #ffffff; transition: all 0.3s; font-family: 'Space Grotesk', sans-serif; }
+    .comment-form input::placeholder { color: #fda4af; }
+    .comment-form input:focus { outline: none; border-color: rgba(244, 63, 94, 0.6); box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.2); background: rgba(255, 255, 255, 0.12); }
+    .comment-form button { padding: 12px 26px; background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap; font-family: 'Space Grotesk', sans-serif; }
+    .comment-form button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244, 63, 94, 0.5); }
+    
+    .empty-state { text-align: center; padding: 60px 40px; background: rgba(244, 63, 94, 0.08); border-radius: 20px; border: 2px dashed rgba(244, 63, 94, 0.3); }
+    .empty-state svg { width: 70px; height: 70px; stroke: rgba(244, 63, 94, 0.5); stroke-width: 1.5; fill: none; margin: 0 auto 20px; }
+    .empty-state p { color: #fda4af; font-size: 16px; }
+    
+    .back-link { margin-top: 35px; text-align: center; }
+    .back-link a { color: #fda4af; text-decoration: none; font-weight: 600; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 24px; border-radius: 12px; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.25); transition: all 0.3s; }
+    .back-link a:hover { background: rgba(244, 63, 94, 0.18); border-color: rgba(244, 63, 94, 0.4); gap: 14px; transform: translateY(-2px); color: #fecdd3; }
+    .back-link svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none; transition: transform 0.3s; }
+    .back-link a:hover svg { transform: translateX(-4px); }
+    
+    @media (max-width: 968px) { .task-header { flex-direction: column; } .task-actions { width: 100%; } }
+    @media (max-width: 768px) { 
+      .orbit-logo { left: 20px; top: 20px; } 
+      .logo-icon { width: 36px; height: 36px; } 
+      .logo-icon svg { width: 18px; height: 18px; } 
+      .logo-text { font-size: 22px; } 
+      .top-nav { top: 20px; right: 20px; flex-direction: column; gap: 8px; } 
+      .main-container { padding: 0 20px; margin-top: 100px; } 
+      .header-card, .main-content { padding: 40px 30px; } 
+      .project-header { flex-direction: column; } 
+      .project-title { font-size: 32px; } 
+      .create-task-btn { width: 100%; justify-content: center; } 
+      .comment-form { flex-direction: column; } 
+    }
+  </style>
+</head>
+<body>
+  <div class="space-bg"></div>
+  <div class="stars" id="stars"></div>
+  <div class="orbits">
+    <div class="orbit orbit-1"><div class="planet planet-1"></div></div>
+    <div class="orbit orbit-2"><div class="planet planet-2"></div></div>
+  </div>
+  <div class="glow-orb glow-1"></div>
+  <div class="glow-orb glow-2"></div>
+  
+  <div class="orbit-logo">
+    <div class="logo-container">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
+      </div>
+      <div class="logo-text">ORBIT</div>
+    </div>
+  </div>
+  
+  <div class="top-nav">
+    <a href="{% url 'dashboard' %}" class="nav-btn">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a href="{% url 'logout' %}" class="nav-btn logout-btn">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </a>
+  </div>
+  
+  <div class="main-container">
+    <div class="header-card">
+      <div class="project-header">
+        <div>
+          <h1 class="project-title">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            {{ project.name }}
+          </h1>
+          <p class="project-desc">{{ project.description }}</p>
+        </div>
+        <a href="{% url 'create_task' project.id %}" class="create-task-btn">
+          <span>Create Task</span>
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </a>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Tasks
+      </h2>
+      
+      {% if tasks %}
+        <ul class="tasks-list">
+        {% for task in tasks %}
+          <li class="task-item">
+            <div class="task-header">
+              <div class="task-info">
+                <div class="task-title">
+                  <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  {{ task.title }}
+                </div>
+                <div class="task-meta">
+                  <span class="status-badge {{ task.status }}">{{ task.get_status_display }}</span>
+                  <span class="assignee">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    {% if task.assigned_to %}{{ task.assigned_to.username }}{% else %}Unassigned{% endif %}
+                  </span>
+                </div>
+              </div>
+              <div class="task-actions">
+                <form method="post" action="{% url 'change_task_status' task.id %}" class="status-form">
+                  {% csrf_token %}
+                  <select name="status">
+                    <option value="todo" {% if task.status == "todo" %}selected{% endif %}>To Do</option>
+                    <option value="in_progress" {% if task.status == "in_progress" %}selected{% endif %}>In Progress</option>
+                    <option value="done" {% if task.status == "done" %}selected{% endif %}>Done</option>
+                  </select>
+                  <button type="submit">Change</button>
+                </form>
+                <a href="{% url 'edit_task' task.id %}" class="edit-btn">Edit</a>
+                <a href="{% url 'delete_task' task.id %}" class="delete-btn" onclick="return confirm('Delete this task?');">Delete</a>
+              </div>
+            </div>
+            
+            <div class="comments-section">
+              <h4 class="comments-title">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Comments
+              </h4>
+              <ul class="comments-list">
+                {% for comment in task.comments.all %}
+                  <li class="comment-item">
+                    <div class="comment-author">{{ comment.user.username }}</div>
+                    <div class="comment-content">{{ comment.content }}</div>
+                  </li>
+                {% empty %}
+                  <li class="comment-empty">No comments yet.</li>
+                {% endfor %}
+              </ul>
+              <form method="post" action="{% url 'add_comment' task.id %}" class="comment-form">
+                {% csrf_token %}
+                <input type="text" name="content" placeholder="Write a comment..." required>
+                <button type="submit">Add</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            <line x1="12" y1="11" x2="12" y2="17"></line>
+            <line x1="9" y1="14" x2="15" y2="14"></line>
+          </svg>
+          <p>No tasks yet. Create your first task to get started!</p>
+        </div>
+      {% endif %}
+      
+      <div class="back-link">
+        <a href="{% url 'dashboard' %}">
+          <svg viewBox="0 0 24 24">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      starsContainer.appendChild(star);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Orbit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: #0a0e27;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    .space-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f1729 0%, #1a1f3a 50%, #0a0e27 100%);
+      z-index: 1;
+    }
+    
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+    
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    
+    .glow-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 2;
+    }
+    
+    .glow-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(167, 139, 250, 0.4), transparent);
+      top: -300px;
+      right: -200px;
+      animation: float 18s ease-in-out infinite;
+    }
+    
+    .glow-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.3), transparent);
+      bottom: -250px;
+      left: -150px;
+      animation: float 15s ease-in-out infinite reverse;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, -30px); }
+    }
+    
+    .orbit-logo {
+      position: fixed;
+      top: 35px;
+      left: 40px;
+      z-index: 100;
+      animation: fadeIn 1s ease-out;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 0 40px rgba(167, 139, 250, 0.7),
+                  0 0 20px rgba(255, 255, 255, 0.3);
+    }
+    
+    .logo-icon::before {
+      content: '';
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: orbit-pulse 2s ease-out infinite;
+    }
+    
+    @keyframes orbit-pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    
+    .logo-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: white;
+    }
+    
+    .logo-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff, #e0e7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 2px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .top-nav {
+      position: fixed;
+      top: 35px;
+      right: 40px;
+      display: flex;
+      gap: 12px;
+      z-index: 100;
+      animation: fadeIn 1s ease-out 0.2s backwards;
+    }
+    
+    .nav-btn {
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(167, 139, 250, 0.4);
+    }
+    
+    .nav-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+    
+    .badge-notify {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 10px;
+      min-width: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
+      animation: pulse-badge 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-badge {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    .logout-btn {
+      background: rgba(248, 113, 113, 0.15);
+      border-color: rgba(248, 113, 113, 0.3);
+      color: #fecaca;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(248, 113, 113, 0.25);
+      border-color: rgba(248, 113, 113, 0.5);
+      box-shadow: 0 10px 30px rgba(248, 113, 113, 0.3);
+    }
+    
+    .main-container {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 140px 40px 60px;
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .welcome-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 50px;
+      gap: 30px;
+    }
+    
+    .welcome-info h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 20px rgba(167, 139, 250, 0.5);
+    }
+    
+    .welcome-subtitle {
+      color: #e0e7ff;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn-primary {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border: none;
+      border-radius: 14px;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(167, 139, 250, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(167, 139, 250, 0.6);
+    }
+    
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      margin: 40px 0;
+    }
+    
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .section-title svg {
+      width: 24px;
+      height: 24px;
+      stroke: #a78bfa;
+      fill: none;
+      stroke-width: 2;
+    }
+    
+    .organizations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    
+    .org-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 28px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .org-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(135deg, rgba(167, 139, 250, 0.3), rgba(96, 165, 250, 0.3));
+      border-radius: 20px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .org-card:hover::before {
+      opacity: 1;
+    }
+    
+    .org-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(167, 139, 250, 0.3);
+    }
+    
+    .org-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+    }
+    
+    .org-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+    
+    .org-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+    
+    .btn-open {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-open:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .empty-state {
+      background: rgba(96, 165, 250, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      border-radius: 20px;
+      padding: 60px 40px;
+      text-align: center;
+    }
+    
+    .empty-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 15px 40px rgba(167, 139, 250, 0.4);
+    }
+    
+    .empty-icon svg {
+      width: 40px;
+      height: 40px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+    
+    .empty-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+    
+    .empty-text {
+      color: #cbd5e1;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+      .orbit-logo {
+        left: 20px;
+        top: 20px;
+      }
+      
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+      }
+      
+      .logo-icon svg {
+        width: 18px;
+        height: 18px;
+      }
+      
+      .logo-text {
+        font-size: 22px;
+      }
+      
+      .top-nav {
+        top: 20px;
+        right: 20px;
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .main-container {
+        padding: 140px 20px 40px;
+      }
+      
+      .welcome-section {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .welcome-info h1 {
+        font-size: 32px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .btn-primary {
+        justify-content: center;
+      }
+      
+      .organizations-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="space-bg"></div>
+  <div class="stars" id="stars"></div>
+  
+  <div class="glow-orb glow-1"></div>
+  <div class="glow-orb glow-2"></div>
+  
+  <div class="orbit-logo">
+    <div class="logo-container">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="12" y1="2" x2="12" y2="6"/>
+          <line x1="12" y1="18" x2="12" y2="22"/>
+        </svg>
+      </div>
+      <div class="logo-text">ORBIT</div>
+    </div>
+  </div>
+  
+  <div class="top-nav">
+    <a href="{% url 'my_invites' %}" class="nav-btn">
+      <svg viewBox="0 0 24 24">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      My Invites
+      {% if invites_count > 0 %}
+      <span class="badge-notify">{{ invites_count }}</span>
+      {% endif %}
+    </a>
+    <a href="{% url 'logout' %}" class="nav-btn logout-btn">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+      Logout
+    </a>
+  </div>
+  
+  <div class="main-container">
+    <div class="welcome-section">
+      <div class="welcome-info">
+        <h1>Welcome, {{ username }}</h1>
+        <p class="welcome-subtitle">You are in {{ organizations|length }} organization(s)</p>
+      </div>
+      
+      <div class="action-buttons">
+        <a href="{% url 'create_organization' %}" class="btn-primary">
+          <svg viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Create Organization
+        </a>
+      </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    {% if organizations %}
+    <h2 class="section-title">
+      <svg viewBox="0 0 24 24">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+      Your Organizations
+    </h2>
+    
+    <div class="organizations-grid">
+      {% for org in organizations %}
+      <div class="org-card">
+        <div class="org-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div class="org-name">{{ org.name }}</div>
+        <a href="{% url 'organization_detail' org.id %}" class="btn-open">Open Organization</a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <h3 class="empty-title">No Organizations Yet</h3>
+      <p class="empty-text">You are not part of any organization yet.<br>Create one or wait for an invite.</p>
+    </div>
+    {% endif %}
+  </div>
+  
+  <script>
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      starsContainer.appendChild(star);
+    }
+  </script>
+</body>
+</html>
