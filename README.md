@@ -51,11 +51,17 @@ projects, tasks, and role-based access.
 
 ---
 
-##  Screenshots
-![Dashboard](screenshots/2.png)
-![Dashboard](screenshots/my org.png)
-![organization](screenshots/organization.png)
-![SIGNIN](screenshots/signin.png)
+## Screenshots
+
+### Dashboard
+![Dashboard](screenshots/my_org.png)
+
+### Organization
+![Organization](screenshots/organization.png)
+
+### Sign In
+![Sign In](screenshots/signin.png)
+
 ---
 python manage.py migrate
 python manage.py createsuperuser
