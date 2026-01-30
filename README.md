@@ -1,25 +1,25 @@
-#  Orbit 
+# Orbit 🚀
 
-Orbit is a modern team collaboration platform inspired by tools like Microsoft Teams.
+Orbit is a modern team collaboration platform inspired by tools like Microsoft Teams.  
 It enables organizations to collaborate in real-time with live meetings, screen sharing,
 projects, tasks, and role-based access.
 
 ---
 
-##  Features
+## Features
 
-###  Organizations & Roles
+### Organizations & Roles
 - Create organizations
 - Owner / Member roles
 - Invite users to organizations
 
-###  Project & Task Management
+### Project & Task Management
 - Create projects inside organizations
 - Tasks with status (To-Do / In Progress / Done)
 - Assign tasks to members
 - Comments & activity tracking
 
-###  Real-Time Meetings (WebRTC)
+### Real-Time Meetings (WebRTC)
 - Live meeting rooms per organization
 - Screen sharing
 - Audio control (mute / unmute)
@@ -27,7 +27,7 @@ projects, tasks, and role-based access.
 - Real-time user join notifications
 - WebSocket signaling (Django Channels)
 
-###  Real-Time Tech
+### Real-Time Tech
 - WebSocket signaling using Django Channels
 - WebRTC peer connections
 - Auto-reconnect handling
@@ -35,15 +35,15 @@ projects, tasks, and role-based access.
 
 ---
 
-##  Tech Stack
+## Tech Stack
 
-**Backend**
+### Backend
 - Django 5
 - Django Channels
 - ASGI (Daphne)
-- SQLite (dev)
+- SQLite (development)
 
-**Frontend**
+### Frontend
 - HTML / CSS (Custom UI)
 - Vanilla JavaScript
 - WebRTC API
@@ -53,13 +53,20 @@ projects, tasks, and role-based access.
 
 ## Screenshots
 
-## Screenshots
+### Dashboard
+![Dashboard](screenshots/2.PNG)
 
-![Dashboard](screenshots/2.png)
-![Organization](screenshots/organization.png)
-![Sign In](screenshots/signin.png)
+### Organization
+![Organization](screenshots/organization.PNG)
 
+### Sign In
+![Sign In](screenshots/signin.PNG)
 
 ---
+
+## Setup (Local Development)
+
+```bash
 python manage.py migrate
 python manage.py createsuperuser
+python manage.py runserver
