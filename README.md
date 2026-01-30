@@ -52,8 +52,10 @@ projects, tasks, and role-based access.
 ---
 
 ##  Screenshots
-> (Add screenshots of dashboard, meeting room, screen sharing)
-
+![Dashboard](screenshots/2.png)
+![Dashboard](screenshots/my org.png)
+![organization](screenshots/organization.png)
+![SIGNIN](screenshots/signin.png)
 ---
 python manage.py migrate
 python manage.py createsuperuser
