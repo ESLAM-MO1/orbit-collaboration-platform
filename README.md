@@ -53,14 +53,12 @@ projects, tasks, and role-based access.
 
 ## Screenshots
 
-### Dashboard
-![Dashboard](Orbit\orbit\screenshots\2.PNG)
+## Screenshots
 
-### Organization
-![Organization](Orbit\orbit\organization.png)
+![Dashboard](screenshots/2.png)
+![Organization](screenshots/organization.png)
+![Sign In](screenshots/signin.png)
 
-### Sign In
-![Sign In](Orbit\orbit\screenshots/signin.png)
 
 ---
 python manage.py migrate
